@@ -6,16 +6,16 @@ using namespace std;
 int main()
 {
     Sudoku sudoku;
-    sudoku.readSudoku(9, 3, 3, "regularSudoku1.txt");
+    sudoku.readSudoku(9, 3, 3, "tests\\regularSudoku1.txt");
     sudoku.decide();
     cout << sudoku;
-    sudoku.readSudoku(6, 3, 2, "regularSudoku2.txt");
+    sudoku.readSudoku(6, 3, 2, "tests\\regularSudoku2.txt");
     sudoku.decide();
     cout << sudoku;
-    sudoku.readSudoku(25, 5, 5, "regularSudoku3.txt");
+    sudoku.readSudoku(25, 5, 5, "tests\\regularSudoku3.txt");
     sudoku.decide();
     cout << sudoku;
-    sudoku.readSudoku(12, "geometricSudokuGroup2.txt", "geometricSudoku2.txt");
+    sudoku.readSudoku(12, "tests\\geometricSudokuGroup2.txt", "tests\\geometricSudoku2.txt");
     sudoku.decide();
     cout << sudoku;
     return 0;
