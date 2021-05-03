@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>
 
-//вывод
+//РІС‹РІРѕРґ
 std::ostream& operator<<(std::ostream& f, Sudoku& sudoku)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& f, Sudoku& sudoku)
     return f;
 }
 
-//считывыет геометрическую судоку
+//СЃС‡РёС‚С‹РІС‹РµС‚ РіРµРѕРјРµС‚СЂРёС‡РµСЃРєСѓСЋ СЃСѓРґРѕРєСѓ
 bool Sudoku::readSudoku(int SIZE, std::string group, std::string sudoku)
 {
     std::ifstream fileSudoku, fileGroup;
@@ -79,7 +79,7 @@ bool Sudoku::readSudoku(int SIZE, std::string group, std::string sudoku)
     return true;
 }
 
-//считывает обычную судоку
+//СЃС‡РёС‚С‹РІР°РµС‚ РѕР±С‹С‡РЅСѓСЋ СЃСѓРґРѕРєСѓ
 bool Sudoku::readSudoku(int SIZE, int length, int height, std::string fileName)
 {
     std::ifstream file;
@@ -130,7 +130,7 @@ bool Sudoku::readSudoku(int SIZE, int length, int height, std::string fileName)
     return true;
 }
 
-//освобождает и инициализирует память
+//РѕСЃРІРѕР±РѕР¶РґР°РµС‚ Рё РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РїР°РјСЏС‚СЊ
 void Sudoku::creatSudoku(int SIZE)
 {
     if (used == true)
@@ -163,7 +163,7 @@ void Sudoku::creatSudoku(int SIZE)
     return;
 }
 
-//инициализирует массив
+//РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РјР°СЃСЃРёРІ
 void Sudoku::initialization(int**& field, int size)
 {
     field = new int* [size];
@@ -175,7 +175,7 @@ void Sudoku::initialization(int**& field, int size)
     return;
 }
 
-//находит кандидатов для клеток группы
+//РЅР°С…РѕРґРёС‚ РєР°РЅРґРёРґР°С‚РѕРІ РґР»СЏ РєР»РµС‚РѕРє РіСЂСѓРїРїС‹
 void Sudoku::preparationCandidates(group& a, int** Field)
 {
     bool decided = true;
@@ -229,7 +229,7 @@ void Sudoku::preparationCandidates(group& a, int** Field)
     return;
 }
 
-//подставляет одиночных кандидатов(метод синглов)
+//РїРѕРґСЃС‚Р°РІР»СЏРµС‚ РѕРґРёРЅРѕС‡РЅС‹С… РєР°РЅРґРёРґР°С‚РѕРІ(РјРµС‚РѕРґ СЃРёРЅРіР»РѕРІ)
 bool Sudoku::check(group& a, int** Field)
 {
     bool move = false;
@@ -270,7 +270,7 @@ bool Sudoku::check(group& a, int** Field)
     return move;
 }
 
-//возвращвет позицию первой свободной клетки в группе, если такой нет - -1
+//РІРѕР·РІСЂР°С‰РІРµС‚ РїРѕР·РёС†РёСЋ РїРµСЂРІРѕР№ СЃРІРѕР±РѕРґРЅРѕР№ РєР»РµС‚РєРё РІ РіСЂСѓРїРїРµ, РµСЃР»Рё С‚Р°РєРѕР№ РЅРµС‚ - -1
 int Sudoku::searchCell(group& a, int n, int** initialField)
 {
     for (int i = n + 1; i < SIZE; i++)
@@ -283,7 +283,7 @@ int Sudoku::searchCell(group& a, int n, int** initialField)
     return -1;
 }
 
-//откатывает знвчения до предыдущих(в переборе с возвратом используется одна основная структура данных)
+//РѕС‚РєР°С‚С‹РІР°РµС‚ Р·РЅРІС‡РµРЅРёСЏ РґРѕ РїСЂРµРґС‹РґСѓС‰РёС…(РІ РїРµСЂРµР±РѕСЂРµ СЃ РІРѕР·РІСЂР°С‚РѕРј РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РѕРґРЅР° РѕСЃРЅРѕРІРЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РґР°РЅРЅС‹С…)
 void Sudoku::initialValues(group& a, int** initialField)
 {
     bool* list = new bool[SIZE];
@@ -312,7 +312,7 @@ void Sudoku::initialValues(group& a, int** initialField)
     return;
 }
 
-//копирует значения из одного массива в другой
+//РєРѕРїРёСЂСѓРµС‚ Р·РЅР°С‡РµРЅРёСЏ РёР· РѕРґРЅРѕРіРѕ РјР°СЃСЃРёРІР° РІ РґСЂСѓРіРѕР№
 void Sudoku::copyField(int** copyedField, int** initialField)
 {
     for (int i = 0; i < SIZE; i++)
@@ -326,8 +326,8 @@ void Sudoku::copyField(int** copyedField, int** initialField)
 }
 
 
-//метод синглов всегда подставляет одиночных кандидатов. Данный метод даёт верификацию, что значение в клетке не встечается
-//в столбце и строке(в группе проверять не надо, там значения не могут повторятся из-за структуры данных)
+//РјРµС‚РѕРґ СЃРёРЅРіР»РѕРІ РІСЃРµРіРґР° РїРѕРґСЃС‚Р°РІР»СЏРµС‚ РѕРґРёРЅРѕС‡РЅС‹С… РєР°РЅРґРёРґР°С‚РѕРІ. Р”Р°РЅРЅС‹Р№ РјРµС‚РѕРґ РґР°С‘С‚ РІРµСЂРёС„РёРєР°С†РёСЋ, С‡С‚Рѕ Р·РЅР°С‡РµРЅРёРµ РІ РєР»РµС‚РєРµ РЅРµ РІСЃС‚РµС‡Р°РµС‚СЃСЏ
+//РІ СЃС‚РѕР»Р±С†Рµ Рё СЃС‚СЂРѕРєРµ(РІ РіСЂСѓРїРїРµ РїСЂРѕРІРµСЂСЏС‚СЊ РЅРµ РЅР°РґРѕ, С‚Р°Рј Р·РЅР°С‡РµРЅРёСЏ РЅРµ РјРѕРіСѓС‚ РїРѕРІС‚РѕСЂСЏС‚СЃСЏ РёР·-Р·Р° СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…)
 bool Sudoku::repetitions(int** Field)
 {
     for (int h = 0; h < SIZE; h++)
@@ -359,7 +359,7 @@ bool Sudoku::repetitions(int** Field)
     return false;
 }
 
-//находит последнюю не заполненную клетку и её групп(индетификация решения)
+//РЅР°С…РѕРґРёС‚ РїРѕСЃР»РµРґРЅСЋСЋ РЅРµ Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ РєР»РµС‚РєСѓ Рё РµС‘ РіСЂСѓРїРї(РёРЅРґРµС‚РёС„РёРєР°С†РёСЏ СЂРµС€РµРЅРёСЏ)
 void Sudoku::searchTheLastGroupAndCell(int& Group, int& Cell)
 {
     for (int numberGroup = SIZE - 1; numberGroup >= 0; numberGroup--)
@@ -380,7 +380,7 @@ void Sudoku::searchTheLastGroupAndCell(int& Group, int& Cell)
     return;
 }
 
-//перенос решения судоку в основной масств
+//РїРµСЂРµРЅРѕСЃ СЂРµС€РµРЅРёСЏ СЃСѓРґРѕРєСѓ РІ РѕСЃРЅРѕРІРЅРѕР№ РјР°СЃСЃС‚РІ
 void Sudoku::transferOfValues(int** field)
 {
     for (int i = 0; i < SIZE; i++)
@@ -393,7 +393,7 @@ void Sudoku::transferOfValues(int** field)
     return;
 }
 
-//перебор с возвратом
+//РїРµСЂРµР±РѕСЂ СЃ РІРѕР·РІСЂР°С‚РѕРј
 void Sudoku::iterationOverValues(int** initialField)
 {
     static bool decided;
@@ -418,7 +418,7 @@ void Sudoku::iterationOverValues(int** initialField)
                 break;
             }
         }
-        std::set <int> tempSet = square[numberSquare].listCell[numberCell].candidates;//preparationCandidates изменяет множества кандидатов
+        std::set <int> tempSet = square[numberSquare].listCell[numberCell].candidates;//preparationCandidates РёР·РјРµРЅСЏРµС‚ РјРЅРѕР¶РµСЃС‚РІР° РєР°РЅРґРёРґР°С‚РѕРІ
         for (auto it = tempSet.begin(); it != tempSet.end() && !end; it++)
         {
             int quantityZero = SIZE * SIZE;
@@ -459,7 +459,7 @@ void Sudoku::iterationOverValues(int** initialField)
                     }
                 }
             }
-            if (quantityZero == 0)//решение найдено
+            if (quantityZero == 0)//СЂРµС€РµРЅРёРµ РЅР°Р№РґРµРЅРѕ
             {
                 transferOfValues(fieldSecond);
                 delete[] fieldSecond[0];
@@ -467,7 +467,7 @@ void Sudoku::iterationOverValues(int** initialField)
                 decided = true;
                 return;
             }
-            bool emptyСells = false;//в каждой пустой клетке есть хотя бы один кандидат
+            bool emptyГ‘ells = false;//РІ РєР°Р¶РґРѕР№ РїСѓСЃС‚РѕР№ РєР»РµС‚РєРµ РµСЃС‚СЊ С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ РєР°РЅРґРёРґР°С‚
             for (int numberSquare = 0; numberSquare < SIZE; numberSquare++)
             {
                 if (!square[numberSquare].decided)
@@ -478,15 +478,15 @@ void Sudoku::iterationOverValues(int** initialField)
                         {
                             if (square[numberSquare].listCell[numberCell].candidates.size() == 0)
                             {
-                                emptyСells = true;
+                                emptyГ‘ells = true;
                                 break;
                             }
                         }
                     }
                 }
-                if (emptyСells) { break; }
+                if (emptyГ‘ells) { break; }
             }
-            if (emptyСells == false)
+            if (emptyГ‘ells == false)
             {
                 iterationOverValues(fieldSecond);
                 if (decided == true)
@@ -516,7 +516,7 @@ void Sudoku::iterationOverValues(int** initialField)
     return;
 }
 
-//сначала пробуем найти решение с помощью метода синглов, в случае если его не будет пребегаем к перебору с возвратом
+//СЃРЅР°С‡Р°Р»Р° РїСЂРѕР±СѓРµРј РЅР°Р№С‚Рё СЂРµС€РµРЅРёРµ СЃ РїРѕРјРѕС‰СЊСЋ РјРµС‚РѕРґР° СЃРёРЅРіР»РѕРІ, РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РµРіРѕ РЅРµ Р±СѓРґРµС‚ РїСЂРµР±РµРіР°РµРј Рє РїРµСЂРµР±РѕСЂСѓ СЃ РІРѕР·РІСЂР°С‚РѕРј
 void Sudoku::decide()
 {
     bool move = true;
