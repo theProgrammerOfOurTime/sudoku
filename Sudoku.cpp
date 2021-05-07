@@ -177,39 +177,20 @@ void Sudoku::initialization(int**& field, int size)
 
 //находит кандидатов для клеток группы
 void Sudoku::preparationCandidates(group& a, int** Field)
-{
-    bool decided = true;
-    for (int i = 0; i < SIZE; i++)
-    {
-        if (a.listNumber[i])
-        {
-            decided = false;
-            break;
-        }
-    }
-    if (a.decided = decided)//this is ok
-    {
-        return;
-    }
+{ 
     for (int numberCell = 0; numberCell < SIZE; numberCell++)
     {
         if (a.listCell[numberCell].state == true)
         {
             a.listCell[numberCell].candidates.clear();
             bool* candidat = new bool[SIZE];
-            for (int i = 0; i < SIZE; i++)
-            {
-                candidat[i] = true;
-            }
+            for (int i = 0; i < SIZE; i++) { candidat[i] = true; }
             for (int i = 0; i < SIZE; i++)
             {
                 if (Field[i][a.listCell[numberCell].positionXY.second] != 0)
                 {
                     candidat[Field[i][a.listCell[numberCell].positionXY.second] - 1] = false;
                 }
-            }
-            for (int i = 0; i < SIZE; i++)
-            {
                 if (Field[a.listCell[numberCell].positionXY.first][i] != 0)
                 {
                     candidat[Field[a.listCell[numberCell].positionXY.first][i] - 1] = false;
@@ -239,32 +220,23 @@ bool Sudoku::check(group& a, int** Field)
         {
             for (int numberCell = 0; numberCell < SIZE; numberCell++)
             {
-                if (a.listCell[numberCell].state == true)
+                if (a.listCell[numberCell].state == true && a.listCell[numberCell].candidates.find(i + 1) != a.listCell[numberCell].candidates.end())
                 {
-                    if (a.listCell[numberCell].candidates.find(i + 1) != a.listCell[numberCell].candidates.end())
-                    {
-                        move = true;
-                        a.listNumber[i] = false;
-                        Field[a.listCell[numberCell].positionXY.first][a.listCell[numberCell].positionXY.second] = i + 1;
-                        a.listCell[numberCell].state = false;
-                        break;
-                    }
+                    move = true;
+                    a.listNumber[i] = false;
+                    Field[a.listCell[numberCell].positionXY.first][a.listCell[numberCell].positionXY.second] = i + 1;
+                    a.listCell[numberCell].state = false;
+                    break;
                 }
             }
         }
         a.quantityRepeat[i] = 0;
-    }
-    for (int numberCell = 0; numberCell < SIZE; numberCell++)
-    {
-        if (a.listCell[numberCell].state == true)
+        if (a.listCell[i].state == true && a.listCell[i].candidates.size() == 1)
         {
-            if (a.listCell[numberCell].candidates.size() == 1)
-            {
-                move = true;
-                a.listNumber[*(a.listCell[numberCell].candidates.begin()) - 1] = false;
-                Field[a.listCell[numberCell].positionXY.first][a.listCell[numberCell].positionXY.second] = *(a.listCell[numberCell].candidates.begin());
-                a.listCell[numberCell].state = false;
-            }
+            move = true;
+            a.listNumber[*(a.listCell[i].candidates.begin()) - 1] = false;
+            Field[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] = *(a.listCell[i].candidates.begin());
+            a.listCell[i].state = false;
         }
     }
     return move;
@@ -275,10 +247,7 @@ int Sudoku::searchCell(group& a, int n, int** initialField)
 {
     for (int i = n + 1; i < SIZE; i++)
     {
-        if (initialField[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] == 0)
-        {
-            return i;
-        }
+        if (initialField[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] == 0) { return i; }
     }
     return -1;
 }
@@ -286,11 +255,7 @@ int Sudoku::searchCell(group& a, int n, int** initialField)
 //откатывает знвчения до предыдущих(в переборе с возвратом используется одна основная структура данных)
 void Sudoku::initialValues(group& a, int** initialField)
 {
-    bool* list = new bool[SIZE];
-    for (int i = 0; i < SIZE; i++)
-    {
-        list[i] = true;
-    }
+    for (int i = 0; i < SIZE; i++) { a.listNumber[i] = true; }
     for (int i = 0; i < SIZE; i++)
     {
         if (initialField[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] == 0)
@@ -300,15 +265,10 @@ void Sudoku::initialValues(group& a, int** initialField)
         }
         else
         {
-            list[initialField[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] - 1] = false;
+            a.listNumber[initialField[a.listCell[i].positionXY.first][a.listCell[i].positionXY.second] - 1] = false;
         }
     }
-    for (int i = 0; i < SIZE; i++)
-    {
-        a.listNumber[i] = list[i];
-    }
     preparationCandidates(a, initialField);
-    delete[] list;
     return;
 }
 
@@ -317,14 +277,10 @@ void Sudoku::copyField(int** copyedField, int** initialField)
 {
     for (int i = 0; i < SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
-        {
-            copyedField[i][j] = initialField[i][j];
-        }
+        for (int j = 0; j < SIZE; j++) { copyedField[i][j] = initialField[i][j]; }
     }
     return;
 }
-
 
 //метод синглов всегда подставляет одиночных кандидатов. Данный метод даёт верификацию, что значение в клетке не встечается
 //в столбце и строке(в группе проверять не надо, там значения не могут повторятся из-за структуры данных)
@@ -336,58 +292,50 @@ bool Sudoku::repetitions(int** Field)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                if (Field[i][h] != 0)
-                {
-                    if (Field[i][h] == Field[i][j] && h != j)
-                    {
-                        return true;
-                    }
-                }
-            }
-            for (int j = 0; j < SIZE; j++)
-            {
-                if (Field[h][i] != 0)
-                {
-                    if (Field[h][i] == Field[j][i] && h != j)
-                    {
-                        return true;
-                    }
-                }
+                if (Field[i][h] != 0 && Field[i][h] == Field[i][j] && h != j) { return true; }
+                if (Field[h][i] != 0 && Field[h][i] == Field[j][i] && h != j) { return true; }
             }
         }
     }
     return false;
 }
 
-//находит последнюю не заполненную клетку и её групп(индетификация решения)
-void Sudoku::searchTheLastGroupAndCell(int& Group, int& Cell)
-{
-    for (int numberGroup = SIZE - 1; numberGroup >= 0; numberGroup--)
-    {
-        if (!square[numberGroup].decided)
-        {
-            for (int numberCell = SIZE - 1; numberCell >= 0; numberCell--)
-            {
-                if (square[numberGroup].listCell[numberCell].state)
-                {
-                    Group = numberGroup;
-                    Cell = numberCell;
-                    return;
-                }
-            }
-        }
-    }
-    return;
-}
-
-//перенос решения судоку в основной масств
+//перенос решения судоку в основной массив
 void Sudoku::transferOfValues(int** field)
 {
     for (int i = 0; i < SIZE; i++)
     {
+        for (int j = 0; j < SIZE; j++) { this->field[i][j] = field[i][j]; }
+    }
+    return;
+}
+
+int Sudoku::counyZero(int** field)
+{
+    int zero = 0;
+    for (int i = 0; i < SIZE; i++)
+    {
         for (int j = 0; j < SIZE; j++)
         {
-            this->field[i][j] = field[i][j];
+            if (field[i][j] == 0) { zero++; }
+        }
+    }
+    return zero;
+}
+
+void Sudoku::singlesMethod(int** field)
+{
+    bool move = true;
+    while (move != false)
+    {
+        move = false;
+        for (int numberSquare = 0; numberSquare < SIZE; numberSquare++)
+        {
+            if (!square[numberSquare].decided)
+            {
+                preparationCandidates(square[numberSquare], field);
+                move = move || check(square[numberSquare], field);
+            }
         }
     }
     return;
@@ -399,8 +347,7 @@ void Sudoku::iterationOverValues(int** initialField)
     static bool decided;
     decided = false;
     depth++;
-    int numberCell = -1, numberSquare = 0, theLastCell, theLastGroup;
-    searchTheLastGroupAndCell(theLastGroup, theLastCell);
+    int numberCell = -1, numberSquare = 0;
     int** fieldSecond;
     initialization(fieldSecond, SIZE);
     bool end = false;
@@ -411,34 +358,18 @@ void Sudoku::iterationOverValues(int** initialField)
             if (!square[numberSquare].decided)
             {
                 numberCell = searchCell(square[numberSquare], numberCell, initialField);
-                if (numberCell == -1)
-                {
-                    continue;
-                }
+                if (numberCell == -1) { continue; }
                 break;
             }
         }
         std::set <int> tempSet = square[numberSquare].listCell[numberCell].candidates;//preparationCandidates изменяет множества кандидатов
         for (auto it = tempSet.begin(); it != tempSet.end() && !end; it++)
         {
-            int quantityZero = SIZE * SIZE;
             copyField(fieldSecond, initialField);
             fieldSecond[square[numberSquare].listCell[numberCell].positionXY.first][square[numberSquare].listCell[numberCell].positionXY.second] = *(it);
             square[numberSquare].listCell[numberCell].state = false;
             square[numberSquare].listNumber[*(it)-1] = false;
-            bool move = true;
-            while (move != false)
-            {
-                move = false;
-                for (int numberSquare = 0; numberSquare < SIZE; numberSquare++)
-                {
-                    if (!square[numberSquare].decided)
-                    {
-                        preparationCandidates(square[numberSquare], fieldSecond);
-                        move = move || check(square[numberSquare], fieldSecond);
-                    }
-                }
-            }
+            singlesMethod(fieldSecond);
             if (repetitions(fieldSecond))
             {
                 if (depth != 1)
@@ -449,17 +380,7 @@ void Sudoku::iterationOverValues(int** initialField)
                     return;
                 }
             }
-            for (int i = 0; i < SIZE; i++)
-            {
-                for (int j = 0; j < SIZE; j++)
-                {
-                    if (fieldSecond[i][j] != 0)
-                    {
-                        quantityZero--;
-                    }
-                }
-            }
-            if (quantityZero == 0)//решение найдено
+            if ((end = counyZero(fieldSecond) == 0))//решение найдено
             {
                 transferOfValues(fieldSecond);
                 delete[] fieldSecond[0];
@@ -467,26 +388,23 @@ void Sudoku::iterationOverValues(int** initialField)
                 decided = true;
                 return;
             }
-            bool emptyÑells = false;//в каждой пустой клетке есть хотя бы один кандидат
+            bool emptyСells = false;//у каждой пустой клетке есть хотя бы один кандидат
             for (int numberSquare = 0; numberSquare < SIZE; numberSquare++)
             {
                 if (!square[numberSquare].decided)
                 {
                     for (int numberCell = 0; numberCell < SIZE; numberCell++)
                     {
-                        if (square[numberSquare].listCell[numberCell].state == true)
+                        if (square[numberSquare].listCell[numberCell].state == true && square[numberSquare].listCell[numberCell].candidates.size() == 0)
                         {
-                            if (square[numberSquare].listCell[numberCell].candidates.size() == 0)
-                            {
-                                emptyÑells = true;
-                                break;
-                            }
+                            emptyСells = true;
+                            break;
                         }
                     }
                 }
-                if (emptyÑells) { break; }
+                if (emptyСells) { break; }
             }
-            if (emptyÑells == false)
+            if (emptyСells == false)
             {
                 iterationOverValues(fieldSecond);
                 if (decided == true)
@@ -500,7 +418,6 @@ void Sudoku::iterationOverValues(int** initialField)
             {
                 initialValues(square[i], initialField);
             }
-            end = (quantityZero == 0 || (numberCell == theLastCell && numberSquare == theLastGroup));
         }
     }
     if (depth != 1)
@@ -519,31 +436,8 @@ void Sudoku::iterationOverValues(int** initialField)
 //сначала пробуем найти решение с помощью метода синглов, в случае если его не будет пребегаем к перебору с возвратом
 void Sudoku::decide()
 {
-    bool move = true;
-    while (move != false)
-    {
-        move = false;
-        for (int numberSquare = 0; numberSquare < SIZE; numberSquare++)
-        {
-            if (!square[numberSquare].decided)
-            {
-                preparationCandidates(square[numberSquare], field);
-                move = move || check(square[numberSquare], field);
-            }
-        }
-    }
-    int quantityZero = SIZE * SIZE;
-    for (int i = 0; i < SIZE; i++)
-    {
-        for (int j = 0; j < SIZE; j++)
-        {
-            if (field[i][j] != 0)
-            {
-                quantityZero--;
-            }
-        }
-    }
-    if (quantityZero != 0)
+    singlesMethod(field);
+    if (counyZero(field) != 0)
     {
         iterationOverValues(field);
     }
