@@ -177,28 +177,22 @@ void Sudoku::initialization(int**& field, int size)
 
 //находит кандидатов для клеток группы
 void Sudoku::preparationCandidates(group& a, int** Field)
-{ 
+{
     for (int numberCell = 0; numberCell < SIZE; numberCell++)
     {
         if (a.listCell[numberCell].state == true)
         {
             a.listCell[numberCell].candidates.clear();
-            bool* candidat = new bool[SIZE];
-            for (int i = 0; i < SIZE; i++) { candidat[i] = true; }
+            bool* candidat = new bool[SIZE + 1];
+            for (int i = 0; i < SIZE + 1; i++) { candidat[i] = true; }
             for (int i = 0; i < SIZE; i++)
             {
-                if (Field[i][a.listCell[numberCell].positionXY.second] != 0)
-                {
-                    candidat[Field[i][a.listCell[numberCell].positionXY.second] - 1] = false;
-                }
-                if (Field[a.listCell[numberCell].positionXY.first][i] != 0)
-                {
-                    candidat[Field[a.listCell[numberCell].positionXY.first][i] - 1] = false;
-                }
+                candidat[Field[i][a.listCell[numberCell].positionXY.second]] = false;
+                candidat[Field[a.listCell[numberCell].positionXY.first][i]] = false;
             }
             for (int i = 0; i < SIZE; i++)
             {
-                if (candidat[i] == true && a.listNumber[i] == true)
+                if (candidat[i + 1] == true && a.listNumber[i] == true)
                 {
                     a.listCell[numberCell].candidates.insert(i + 1);
                     a.quantityRepeat[i]++;
@@ -310,6 +304,7 @@ void Sudoku::transferOfValues(int** field)
     return;
 }
 
+//считает количество пустых клеток
 int Sudoku::counyZero(int** field)
 {
     int zero = 0;
@@ -323,6 +318,7 @@ int Sudoku::counyZero(int** field)
     return zero;
 }
 
+//метод синглов
 void Sudoku::singlesMethod(int** field)
 {
     bool move = true;
@@ -370,15 +366,12 @@ void Sudoku::iterationOverValues(int** initialField)
             square[numberSquare].listCell[numberCell].state = false;
             square[numberSquare].listNumber[*(it)-1] = false;
             singlesMethod(fieldSecond);
-            if (repetitions(fieldSecond))
+            if (repetitions(fieldSecond) && depth != 1)
             {
-                if (depth != 1)
-                {
-                    delete[] fieldSecond[0];
-                    delete[] fieldSecond;
-                    depth--;
-                    return;
-                }
+                delete[] fieldSecond[0];
+                delete[] fieldSecond;
+                depth--;
+                return;
             }
             if ((end = counyZero(fieldSecond) == 0))//решение найдено
             {
