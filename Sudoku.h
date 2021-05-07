@@ -34,10 +34,11 @@ private:
     void initialValues(group&, int**);
     void copyField(int**, int**);
     bool repetitions(int**);
-    void searchTheLastGroupAndCell(int&, int&);
     void transferOfValues(int**);
     void iterationOverValues(int**);
     void creatSudoku(int);
+    int counyZero(int**);
+    void singlesMethod(int**);
 public:
     Sudoku() { }
     ~Sudoku()
